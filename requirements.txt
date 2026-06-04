@@ -1,0 +1,8 @@
+python-dotenv
+openpyxl
+numpy
+pandas
+matplotlib
+seaborn
+kagglehub
+scikit-learn
