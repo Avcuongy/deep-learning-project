@@ -221,5 +221,5 @@ __marimo__/
 data/
 
 # test
-test.*
 test/
+*test*.*
