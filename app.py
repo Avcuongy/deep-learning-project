@@ -15,7 +15,6 @@ from torchvision import transforms
 from model.lstm import ImageCaptioningModel as LSTMImageCaptioningModel
 from model.transformer import ImageCaptioningModel as TransformerImageCaptioningModel
 
-
 PROJECT_ROOT = Path(__file__).resolve().parent
 DEFAULT_TRAIN_CSV = PROJECT_ROOT / "data" / "mimic_train.csv"
 DEFAULT_LSTM_CKPT = PROJECT_ROOT / "models" / "model1.pth"
@@ -327,6 +326,7 @@ def inject_css() -> None:
         unsafe_allow_html=True,
     )
 
+
 def resolve_path(
     user_input: str,
     local_default: Path,
@@ -363,7 +363,9 @@ def build_vocab(train_csv: str, freq_threshold: int) -> Vocabulary:
     return vocab
 
 
-def normalize_state_dict(state_dict: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
+def normalize_state_dict(
+    state_dict: dict[str, torch.Tensor],
+) -> dict[str, torch.Tensor]:
     normalized: dict[str, torch.Tensor] = {}
     for key, value in state_dict.items():
         if key.startswith("module."):
@@ -384,7 +386,9 @@ def extract_state_dict(checkpoint: object) -> dict[str, torch.Tensor]:
     raise TypeError("Không thể đọc state dict từ tệp checkpoint")
 
 
-def build_model(spec: ModelSpec, vocab_size: int, device: torch.device) -> torch.nn.Module:
+def build_model(
+    spec: ModelSpec, vocab_size: int, device: torch.device
+) -> torch.nn.Module:
     if spec.architecture == "lstm":
         model = LSTMImageCaptioningModel(
             vocab_size=vocab_size,
@@ -463,7 +467,13 @@ def safe_text(value: object, fallback: str = "") -> str:
     return str(value)
 
 
-def render_caption_panel(title: str, image: Image.Image, reference: str, prediction: str, meta: dict[str, str]) -> None:
+def render_caption_panel(
+    title: str,
+    image: Image.Image,
+    reference: str,
+    prediction: str,
+    meta: dict[str, str],
+) -> None:
     st.markdown(f"### {title}")
     left, right = st.columns([1.1, 1])
     with left:
@@ -490,7 +500,9 @@ def render_caption_panel(title: str, image: Image.Image, reference: str, predict
             unsafe_allow_html=True,
         )
         if meta:
-            meta_text = " | ".join(f"{key}: {value}" for key, value in meta.items() if value)
+            meta_text = " | ".join(
+                f"{key}: {value}" for key, value in meta.items() if value
+            )
             if meta_text:
                 st.caption(meta_text)
 
@@ -498,7 +510,7 @@ def render_caption_panel(title: str, image: Image.Image, reference: str, predict
 def main() -> None:
     st.set_page_config(
         page_title="Ứng dụng sinh mô tả ảnh",
-        page_icon="🩻",
+        page_icon="🤫",
         layout="wide",
         initial_sidebar_state="expanded",
     )
@@ -507,7 +519,7 @@ def main() -> None:
     st.markdown(
         """
         <div class="hero">
-            <div class="eyebrow">Ứng dụng Streamlit sinh mô tả ảnh</div>
+            <div class="eyebrow">Ứng dụng sinh mô tả ảnh</div>
             <h1>Ứng dụng sinh mô tả cho ảnh X-quang</h1>
         </div>
         """,
@@ -520,11 +532,16 @@ def main() -> None:
         spec = MODEL_SPECS[architecture]
 
         checkpoint_input = st.text_input("Tệp checkpoint", value=str(spec.checkpoint))
-        train_csv_input = st.text_input("Tệp CSV huấn luyện", value=str(DEFAULT_TRAIN_CSV) if DEFAULT_TRAIN_CSV.exists() else "")
+        train_csv_input = st.text_input(
+            "Tệp CSV huấn luyện",
+            value=str(DEFAULT_TRAIN_CSV) if DEFAULT_TRAIN_CSV.exists() else "",
+        )
 
         use_beam = st.checkbox("Dùng beam search", value=True)
         beam_size = st.slider("Kích thước beam", min_value=1, max_value=8, value=5)
-        max_len = st.slider("Độ dài mô tả tối đa", min_value=20, max_value=120, value=DEFAULT_MAX_LEN)
+        max_len = st.slider(
+            "Độ dài mô tả tối đa", min_value=20, max_value=120, value=DEFAULT_MAX_LEN
+        )
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
