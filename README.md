@@ -23,3 +23,18 @@ pip install -e .
 
 python scripts/config.py
 ```
+
+## Streamlit app
+
+Chạy ứng dụng bằng lệnh:
+
+```bash
+streamlit run streamlit_app.py
+```
+
+Ứng dụng có 2 phần:
+
+1. Inference trên test set.
+2. Dán hoặc tải ảnh lên để sinh caption.
+
+Nếu bạn chưa có file dữ liệu local, app sẽ thử tải dữ liệu split và ảnh từ KaggleHub khi tuỳ chọn tự động tải đang bật.
