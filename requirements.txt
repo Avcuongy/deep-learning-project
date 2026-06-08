@@ -6,3 +6,8 @@ matplotlib
 seaborn
 kagglehub
 scikit-learn
+Pillow
+streamlit
+torch
+torchvision
+torchxrayvision
