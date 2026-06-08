@@ -1,0 +1,19 @@
+{
+  "model": "MedCLIP-ResNet",
+  "text_encoder": "emilyalsentzer/Bio_ClinicalBERT",
+  "image_encoder": "ResNet50 via MedCLIPVisionModel",
+  "epochs": 10,
+  "batch_size": 16,
+  "lr": 2e-05,
+  "train_subset": 10000,
+  "val_subset": 1000,
+  "test_subset": 1000,
+  "test_metrics": {
+    "I2T_R@1": 0.004000000189989805,
+    "I2T_R@5": 0.026000000536441803,
+    "I2T_R@10": 0.06300000101327896,
+    "T2I_R@1": 0.012000000104308128,
+    "T2I_R@5": 0.03700000047683716,
+    "T2I_R@10": 0.06800000369548798
+  }
+}
