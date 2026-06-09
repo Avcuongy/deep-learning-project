@@ -29,7 +29,7 @@ python scripts/config.py
 Chạy ứng dụng bằng lệnh:
 
 ```bash
-streamlit run streamlit_app.py
+streamlit run app.py
 ```
 
 Ứng dụng có 2 phần:
